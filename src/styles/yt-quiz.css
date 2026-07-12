@@ -189,6 +189,16 @@
   flex: 1;
 }
 
+/* Quiz steag: NICIODATĂ row — evită saltul opțiunilor de pe dreapta la centru */
+.yt-main--stack {
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  max-width: 420px;
+  margin: 0 auto;
+  width: 100%;
+}
+
 .yt-flag-wrap {
   width: min(340px, 88vw);
   aspect-ratio: 3 / 2;
@@ -264,12 +274,14 @@
 .yt-options {
   width: 100%;
   max-width: 380px;
-  display: flex;
-  flex-direction: column;
+  /* Grid fix: 3 sloturi egale — butonul rămâne pe același loc mereu */
+  display: grid;
+  grid-template-rows: repeat(3, 54px);
   gap: 12px;
-  min-height: 180px;
-  justify-content: flex-start;
-  align-items: stretch;
+  min-height: calc(54px * 3 + 12px * 2);
+  align-content: start;
+  justify-items: stretch;
+  margin: 0 auto;
 }
 
 .yt-opt {
@@ -277,19 +289,23 @@
   align-items: center;
   gap: 12px;
   width: 100%;
+  height: 54px;
+  box-sizing: border-box;
   padding: 6px 16px 6px 6px;
   border-radius: 999px;
   background: #fff;
   box-shadow:
     0 5px 0 rgba(0, 0, 0, 0.12),
     0 8px 20px rgba(0, 0, 0, 0.15);
-  transition: transform 0.12s ease;
+  /* fără transform pe active care mută layout-ul global */
+  transition: background 0.15s ease, outline 0.15s ease, opacity 0.15s ease;
   text-align: left;
+  margin: 0;
 }
 
-.yt-opt:active {
-  transform: scale(0.97) translateY(2px);
+.yt-opt:active:not(:disabled) {
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.12);
+  filter: brightness(0.98);
 }
 
 .yt-letter {
@@ -327,13 +343,17 @@
   background: #ffe8ec !important;
 }
 
+/* Greșit / neatins: rămâne pe LOC, doar se estompează (nu visibility:hidden
+   ca să nu pară că butonul „sare” când dispare spațiul vizual) */
 .yt-opt--ghost {
-  visibility: hidden;
+  opacity: 0.22;
+  filter: grayscale(0.6);
   pointer-events: none;
+  box-shadow: none;
 }
 
 .yt-options--answered {
-  justify-content: flex-start;
+  /* același grid — zero reflow */
 }
 
 /* —— Timer bar orizontal (negru + verde) —— */
@@ -429,7 +449,8 @@
     max-width: 960px;
   }
 
-  .yt-main {
+  /* Nu forțăm row pe quiz — yt-main--stack rămâne pe coloană */
+  .yt-main:not(.yt-main--stack) {
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -437,15 +458,18 @@
     width: 100%;
   }
 
-  .yt-flag-wrap {
+  .yt-main:not(.yt-main--stack) .yt-flag-wrap {
     width: min(420px, 48%);
     flex-shrink: 0;
   }
 
-  .yt-options {
+  .yt-main:not(.yt-main--stack) .yt-options {
     flex: 1;
     max-width: 360px;
-    min-height: 200px;
+  }
+
+  .yt-main--stack .yt-flag-wrap {
+    width: min(380px, 90vw);
   }
 
   .yt-round-block {

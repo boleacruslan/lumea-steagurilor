@@ -223,7 +223,8 @@ export default function GuessFlag() {
         <h1 className="yt-title">GHICEȘTE STEAGUL</h1>
 
         {/* Flag + options layout */}
-        <div className="yt-main">
+        {/* yt-main--stack: mereu steag sus + opțiuni jos (fără salt stânga/dreapta) */}
+        <div className="yt-main yt-main--stack">
           <div className={`yt-flag-wrap ${feedback === 'ok' ? 'yt-flag-wrap--ok' : ''} ${feedback === 'bad' || feedback === 'timeout' ? 'yt-flag-wrap--bad' : ''}`}>
             <img
               className="yt-flag-img"

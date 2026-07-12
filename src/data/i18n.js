@@ -1,0 +1,120 @@
+/**
+ * Interfață v1 — română naturală (pentru copii).
+ * Structura permite adăugarea ru/en în v2.
+ */
+
+const ro = {
+  appName: 'Lumea Steagurilor',
+  appSubtitle: 'Învață steagurile și capitalele jucându-te!',
+  play: 'Hai la joacă!',
+  modes: 'Alege un joc',
+  collection: 'Colecția mea',
+  achievements: 'Medalii',
+  settings: 'Setări',
+  back: 'Înapoi',
+  home: 'Acasă',
+  next: 'Următorul',
+  again: 'Mai joacă o dată',
+  continue: 'Continuă',
+  menu: 'Meniu',
+  difficulty: 'Dificultate',
+  easy: 'Ușor',
+  medium: 'Mediu',
+  hard: 'Greu',
+  easyDesc: '50 de țări cunoscute',
+  mediumDesc: 'Aceleași 50 de țări, dar mai greu',
+  hardDesc: 'Peste 100 de țări!',
+  stars: 'Stele',
+  score: 'Punctaj',
+  correct: 'Bravo!',
+  wrong: 'Aproape!',
+  wellDone: 'Bravo!',
+  levelComplete: 'Super! Ai terminat!',
+  youEarned: 'Ai primit',
+  of: 'din',
+  question: 'Întrebarea',
+  listen: 'Ascultă',
+  speakOn: 'Voce: pornită',
+  speakOff: 'Voce: oprită',
+  soundOn: 'Sunete: pornite',
+  soundOff: 'Sunete: oprite',
+  resetProgress: 'Șterge tot progresul',
+  resetConfirm: 'Ești sigur că vrei să ștergi tot ce ai învățat?',
+  yes: 'Da',
+  no: 'Nu',
+  progressSaved: 'Progresul se păstrează pe acest telefon sau calculator',
+  howToPlay: 'Cum se joacă',
+
+  modeGuessFlag: 'Ce steag e acesta?',
+  modeGuessFlagDesc: 'Steag mare + cronometru — ghicește rapid!',
+  modeGuessCapital: 'A cărei țări e capitala?',
+  modeGuessCapitalDesc: 'Vezi capitala — alege țara potrivită',
+  modePairs: 'Găsește perechea',
+  modePairsDesc: 'Steag și numele țării',
+  modePuzzle: 'Puzzle cu steag',
+  modePuzzleDesc: 'Așază piesele la locul lor',
+  modeJourney: 'Călătorie prin lume',
+  modeJourneyDesc: 'Explorează continentele pe rând',
+
+  whichCountry: 'Ce steag e acesta?',
+  whichCapital: 'A cărei țări este această capitală?',
+  whichCapitalShort: 'A cărei țări este capitala?',
+  ofCountry: 'a țării',
+  pickCountry: 'Alege țara',
+  pairsFound: 'Perechi găsite',
+  tapTwoCards: 'Atinge două cartonașe care se potrivesc',
+  puzzleHint: 'Atinge o piesă ca s-o pui la locul ei',
+  puzzleDone: 'Steagul e gata!',
+  raiseFlag: 'Steagul se ridică pe catarg!',
+  journeyTitle: 'Alege un continent',
+  continentProgress: 'Progres pe continent',
+  locked: 'Încă blocat',
+  startLevel: 'Începe',
+  noStarsYet: 'Încă n-ai stele — hai să jucăm!',
+  collected: 'Ai descoperit',
+  flags: 'steaguri',
+  openFlag: 'Descoperit',
+  lockedFlag: 'Încă nu l-ai descoperit',
+  emptyCollection: 'Joacă ca să descoperi steaguri noi!',
+
+  achFirstStar: 'Prima stea',
+  achFirstStarDesc: 'Câștigă prima ta stea',
+  achTenStars: 'Colecționar de stele',
+  achTenStarsDesc: 'Adună 10 stele',
+  achFiftyStars: 'Super erou',
+  achFiftyStarsDesc: 'Adună 50 de stele',
+  achFirstFlag: 'Explorator',
+  achFirstFlagDesc: 'Descoperă primul steag',
+  achHalfFlags: 'Călător prin lume',
+  achHalfFlagsDesc: 'Descoperă 25 de steaguri',
+  achAllBase: 'Maestru al steagurilor',
+  achAllBaseDesc: 'Descoperă toate cele 50 de steaguri de bază',
+  achPerfectLevel: 'Fără greșeală',
+  achPerfectLevelDesc: 'Termină un nivel cu 3 stele',
+  achJourney: 'Mare aventurier',
+  achJourneyDesc: 'Termină un continent',
+
+  settingsTitle: 'Setări',
+  about: 'Despre joc',
+  aboutText:
+    'Un joc educativ pentru copii: steaguri, capitale și continente. Poți juca și fără internet, după ce jocul s-a încărcat o dată.',
+  version: 'Versiune',
+  languageNote: 'Limba: română',
+  voiceTitle: 'Vocea care citește',
+  voiceAuto: 'Automat (cea mai bună română)',
+  voiceNone: 'Nu s-a găsit o voce românească pe acest dispozitiv',
+  voiceHint:
+    'Pe Mac: Setări de sistem → Accesibilitate → Conținut rostit → Voce sistem → descarcă „Ioana” (română). Pe Windows: Setări → Oră și limbă → Vorbire.',
+  voiceTest: 'Proba de voce',
+  voiceTestPhrase: 'Bună! Eu sunt vocea jocului. Hai să învățăm steagurile împreună!',
+}
+
+/** Viitor: ru, en */
+export const STRINGS = { ro }
+
+export const DEFAULT_LANG = 'ro'
+
+export function t(key, lang = DEFAULT_LANG) {
+  const dict = STRINGS[lang] || STRINGS.ro
+  return dict[key] ?? STRINGS.ro[key] ?? key
+}

@@ -267,6 +267,9 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  min-height: 180px;
+  justify-content: flex-start;
+  align-items: stretch;
 }
 
 .yt-opt {
@@ -312,26 +315,25 @@
   line-height: 1.15;
 }
 
-/* Reveal răspuns corect — centrat sub steag */
-.yt-answer-reveal {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 22px 8px 8px;
-  border-radius: 999px;
-  background: #fff;
-  box-shadow:
-    0 6px 0 rgba(0, 0, 0, 0.12),
-    0 12px 28px rgba(0, 0, 0, 0.2);
-  animation: ytFlagIn 0.4s ease;
-  max-width: 95%;
+/* După răspuns: greșitele se estompează pe LOC (fără salt la centru) */
+.yt-opt--correct {
+  outline: 3px solid #39e75f;
+  background: #e8ffe8 !important;
+  box-shadow: 0 5px 0 rgba(57, 231, 95, 0.35), 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-.yt-answer-text {
-  font-size: clamp(1.1rem, 4vw, 1.4rem);
-  font-weight: 900;
-  color: #0f172a;
-  letter-spacing: 0.02em;
+.yt-opt--wrong {
+  outline: 3px solid #ff3b5c;
+  background: #ffe8ec !important;
+}
+
+.yt-opt--ghost {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.yt-options--answered {
+  justify-content: flex-start;
 }
 
 /* —— Timer bar orizontal (negru + verde) —— */
@@ -346,6 +348,20 @@
     0 4px 0 rgba(0, 0, 0, 0.15);
   overflow: hidden;
   border: 3px solid #1e293b;
+  flex-shrink: 0;
+}
+
+.yt-timer-track--hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.yt-feedback-slot {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .yt-timer-fill {
@@ -429,13 +445,7 @@
   .yt-options {
     flex: 1;
     max-width: 360px;
-  }
-
-  .yt-answer-reveal {
-    position: absolute;
-    bottom: 18%;
-    left: 50%;
-    transform: translateX(-50%);
+    min-height: 200px;
   }
 
   .yt-round-block {

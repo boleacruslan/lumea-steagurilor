@@ -241,36 +241,21 @@ export default function GuessFlag() {
             </span>
           </div>
 
-          {/* After answer: show only correct like in video */}
-          {picked && (
-            <div className="yt-answer-reveal">
-              <span
-                className="yt-letter"
-                style={{
-                  background:
-                    LETTER_COLORS[
-                      Math.max(
-                        0,
-                        options.findIndex((o) => o.id === current.id),
-                      )
-                    ] || LETTER_COLORS[2],
-                }}
-              >
-                {String.fromCharCode(
-                  65 + Math.max(0, options.findIndex((o) => o.id === current.id)),
-                )}
-              </span>
-              <span className="yt-answer-text">{current.name.toUpperCase()}</span>
-            </div>
-          )}
-
-          {!picked && (
-            <div className="yt-options">
-              {options.map((opt, i) => (
+          {/* Opțiunile rămân pe același loc — fără salt */}
+          <div className={`yt-options ${picked ? 'yt-options--answered' : ''}`}>
+            {options.map((opt, i) => {
+              let extra = ''
+              if (picked) {
+                if (opt.id === current.id) extra = ' yt-opt--correct'
+                else if (opt.id === picked) extra = ' yt-opt--wrong'
+                else extra = ' yt-opt--ghost'
+              }
+              return (
                 <button
                   key={opt.id}
                   type="button"
-                  className="yt-opt"
+                  className={`yt-opt${extra}`}
+                  disabled={!!picked}
                   onClick={() => resolveAnswer(opt.id, 'pick')}
                 >
                   <span
@@ -281,26 +266,26 @@ export default function GuessFlag() {
                   </span>
                   <span className="yt-opt-text">{opt.label.toUpperCase()}</span>
                 </button>
-              ))}
-            </div>
-          )}
+              )
+            })}
+          </div>
         </div>
 
-        {/* Horizontal timer bar — ca în video */}
-        {!picked && (
-          <div className="yt-timer-track">
-            <div
-              className={`yt-timer-fill ${timerUrgent ? 'yt-timer-fill--urgent' : ''}`}
-              style={{ width: `${timerPct}%` }}
-            />
-          </div>
-        )}
+        {/* Timer: păstrăm locul ca layout-ul să nu sară */}
+        <div className={`yt-timer-track ${picked ? 'yt-timer-track--hidden' : ''}`}>
+          <div
+            className={`yt-timer-fill ${timerUrgent ? 'yt-timer-fill--urgent' : ''}`}
+            style={{ width: `${timerPct}%` }}
+          />
+        </div>
 
-        {feedback === 'ok' && <p className="yt-feedback yt-feedback--ok">🎉 {t('correct')}</p>}
-        {feedback === 'bad' && <p className="yt-feedback yt-feedback--bad">😅 {t('wrong')}</p>}
-        {feedback === 'timeout' && (
-          <p className="yt-feedback yt-feedback--bad">⏰ Timpul a expirat!</p>
-        )}
+        <div className="yt-feedback-slot">
+          {feedback === 'ok' && <p className="yt-feedback yt-feedback--ok">🎉 {t('correct')}</p>}
+          {feedback === 'bad' && <p className="yt-feedback yt-feedback--bad">😅 {t('wrong')}</p>}
+          {feedback === 'timeout' && (
+            <p className="yt-feedback yt-feedback--bad">⏰ Timpul a expirat!</p>
+          )}
+        </div>
 
         <p className="yt-score">⭐ {correctCount} / {totalQ}</p>
       </div>

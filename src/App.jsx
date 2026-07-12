@@ -12,10 +12,18 @@ import Achievements from './pages/Achievements'
 import Settings from './pages/Settings'
 import './App.css'
 
+function routerBasename() {
+  const raw = import.meta.env.BASE_URL || '/'
+  // Capacitor / relative build: "./" → no basename
+  if (raw === './' || raw === '.' || raw === '') return undefined
+  const b = raw.replace(/\/$/, '')
+  return b || undefined
+}
+
 export default function App() {
   return (
     <ProgressProvider>
-      <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '') || '/'}>
+      <BrowserRouter basename={routerBasename()}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/play" element={<Play />} />

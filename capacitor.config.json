@@ -1,0 +1,19 @@
+{
+  "appId": "com.lumeasteagurilor.app",
+  "appName": "Lumea Steagurilor",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "backgroundColor": "#4f46e5",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "style": "LIGHT",
+      "backgroundColor": "#4f46e5"
+    }
+  }
+}

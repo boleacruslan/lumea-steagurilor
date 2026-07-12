@@ -65,6 +65,18 @@ Dacă linkul 404: Settings → Pages → verifică Source = **GitHub Actions**,
 - UI stil quiz + ovozire română (WAV)
 - Fundal sunburst animat
 
+## Mobil (Capacitor)
+
+Aplicație Android / iOS din același cod web.
+
+```bash
+npm run build:mobile   # build + cap sync
+npm run cap:android    # deschide Android Studio
+npm run cap:ios        # deschide Xcode
+```
+
+Ghid complet: **[docs/MOBILE.md](docs/MOBILE.md)**
+
 ## Stack
 
-React + Vite + React Router.
+React + Vite + React Router + Capacitor.

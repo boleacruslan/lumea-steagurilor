@@ -1,44 +1,70 @@
 # Lumea Steagurilor
 
-Joc educațional pentru copii (6–12 ani): steaguri, capitale și continente.
+Joc educațional pentru copii (6–12 ani): steaguri, capitale și continente.  
+**Versiunea 1** — totul **în română**.
 
-**Versiunea 1** — interfață, conținut și voce **în română**.
-
-## Cum rulezi
+## Rulezi local
 
 ```bash
-cd mir-flagov
+cd lumea-steagurilor   # sau ~/mir-flagov
 npm install
 npm run dev
 ```
 
-Deschide adresa din terminal (de obicei `http://localhost:5173`).
+Deschide linkul din terminal (cu base path: de obicei  
+`http://localhost:5173/lumea-steagurilor/`).
 
 ```bash
-npm run build    # build pentru producție
-npm run preview  # previzualizare build
+npm run build
+npm run preview
 ```
+
+## Deploy pe GitHub Pages (online)
+
+Repo: **https://github.com/boleacruslan/lumea-steagurilor**
+
+### Pasul 1 — o dată: activează Pages
+
+1. Deschide repo pe GitHub  
+2. **Settings** → **Pages** (meniul din stânga)  
+3. **Build and deployment** → **Source:** alege **GitHub Actions**  
+4. Salvează (dacă e nevoie)
+
+### Pasul 2 — push pe `main`
+
+```bash
+cd ~/mir-flagov   # calea ta locală
+
+git add .
+git commit -m "Configure GitHub Pages deploy"
+git push origin main
+```
+
+### Pasul 3 — așteaptă deploy-ul
+
+1. Pe GitHub: tab **Actions**  
+2. Workflow **Deploy to GitHub Pages**  
+3. Așteaptă până e **verde** (✅)
+
+### Pasul 4 — joacă online
+
+```
+https://boleacruslan.github.io/lumea-steagurilor/
+```
+
+Dacă linkul 404: Settings → Pages → verifică Source = **GitHub Actions**,  
+și că deploy-ul din Actions a reușit.
+
+---
 
 ## Ce include v1
 
-- **50 de țări** de bază + **~50 extra** la dificultate *Greu*
-- Moduri: Ghicește steagul, Ghicește capitala, Potrivește perechile, Puzzle steag, Călătorie pe continente
-- Stele, colecție de steaguri, realizări (salvate local)
-- Animații: steag care flutură, confetti, „deflate” la greșit, ridicare pe catarg
-- Voce română (Web Speech API) + sunete UI
-- Fără cont / internet pentru logică (date și emoji steaguri sunt în app)
-
-## GitHub
-
-```bash
-git init
-git add .
-git commit -m "Lumea Steagurilor v1 — web RO"
-# creează repo pe GitHub, apoi:
-git remote add origin https://github.com/USER/mir-flagov.git
-git push -u origin main
-```
+- 50 țări de bază + extra la *Greu*
+- Moduri: steag, capitală, perechi, puzzle, călătorie
+- Stele, colecție, medalii (`localStorage`)
+- UI stil quiz + ovozire română (WAV)
+- Fundal sunburst animat
 
 ## Stack
 
-React + Vite + React Router. Progres în `localStorage`.
+React + Vite + React Router.

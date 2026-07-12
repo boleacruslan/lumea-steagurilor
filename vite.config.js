@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
+// Numele repo-ului pe GitHub → URL: https://USER.github.io/lumea-steagurilor/
 export default defineConfig({
   plugins: [react()],
+  base: '/lumea-steagurilor/',
 })

@@ -8,7 +8,8 @@ let currentAudio = null
 let unlocked = false
 let preferredVoiceURI = null
 
-const BASE = '/audio/ro'
+// BASE_URL din Vite (ex: /lumea-steagurilor/) — important pentru GitHub Pages
+const BASE = `${import.meta.env.BASE_URL}audio/ro`
 
 function getCtx() {
   if (typeof window === 'undefined') return null

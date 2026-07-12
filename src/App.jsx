@@ -15,7 +15,7 @@ import './App.css'
 export default function App() {
   return (
     <ProgressProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '') || '/'}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/play" element={<Play />} />

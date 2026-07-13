@@ -8,8 +8,29 @@ let currentAudio = null
 let unlocked = false
 let preferredVoiceURI = null
 
-// BASE_URL din Vite (ex: /lumea-steagurilor/) — important pentru GitHub Pages
-const BASE = `${import.meta.env.BASE_URL}audio/ro`
+/**
+ * URL absolut către fișiere audio.
+ * IMPORTANT pe Capacitor/Android: NU folosi `./audio/...` relativ la ruta React
+ * (ex. /play/capital → greșit /play/audio/...). Mereu de la rădăcina origin.
+ */
+function audioUrl(relPath) {
+  // relPath: "ui/whichCapital.wav" sau "name/ro_ok.wav"
+  const viteBase = import.meta.env.BASE_URL || '/'
+  let prefix
+  if (viteBase === './' || viteBase === '.' || viteBase === '') {
+    // Capacitor / build relativ
+    prefix = '/audio/ro/'
+  } else {
+    // GitHub Pages: /lumea-steagurilor/
+    prefix = `${viteBase}audio/ro/`.replace(/\/{2,}/g, '/')
+  }
+  const path = `${prefix}${relPath}`.replace(/\/{2,}/g, '/')
+  try {
+    return new URL(path, window.location.origin).href
+  } catch {
+    return path
+  }
+}
 
 function getCtx() {
   if (typeof window === 'undefined') return null
@@ -26,7 +47,7 @@ export function unlockAudio() {
   if (ctx?.state === 'suspended') ctx.resume().catch(() => {})
   // „trezește” redarea audio cu un sunet foarte scurt
   try {
-    const a = new Audio(`${BASE}/ui/este.wav`)
+    const a = new Audio(audioUrl('ui/este.wav'))
     a.volume = 0.01
     a.play().then(() => {
       a.pause()
@@ -64,28 +85,44 @@ export function playUrl(url) {
       return
     }
     stopCurrent()
-    unlockAudio()
+    const ctx = getCtx()
+    if (ctx?.state === 'suspended') ctx.resume().catch(() => {})
+    unlocked = true
     try {
-      const a = new Audio(url)
+      const a = new Audio()
       a.preload = 'auto'
       a.volume = 1
+      a.src = url
       currentAudio = a
       a.onended = () => {
         if (currentAudio === a) currentAudio = null
         resolve(true)
       }
       a.onerror = () => {
+        console.warn('[audio] failed to load', url)
         if (currentAudio === a) currentAudio = null
         resolve(false)
       }
-      const p = a.play()
-      if (p && typeof p.then === 'function') {
-        p.catch(() => {
-          // autoplay blocat — încearcă din nou după micro-gest
-          resolve(false)
-        })
+      let started = false
+      const tryPlay = () => {
+        if (started || currentAudio !== a) return
+        started = true
+        const p = a.play()
+        if (p && typeof p.then === 'function') {
+          p.catch((err) => {
+            console.warn('[audio] play blocked', err, url)
+            started = false
+            resolve(false)
+          })
+        }
       }
-    } catch {
+      a.addEventListener('canplaythrough', tryPlay, { once: true })
+      a.addEventListener('loadeddata', tryPlay, { once: true })
+      // fallback dacă evenimentele nu vin pe WebView
+      setTimeout(tryPlay, 200)
+      a.load()
+    } catch (e) {
+      console.warn('[audio] playUrl error', e)
       resolve(false)
     }
   })
@@ -93,20 +130,20 @@ export function playUrl(url) {
 
 export function speakUi(key, enabled = true) {
   if (enabled === false || !key) return Promise.resolve(false)
-  return playUrl(`${BASE}/ui/${key}.wav`)
+  return playUrl(audioUrl(`ui/${key}.wav`))
 }
 
 /** variant: '' | 'ok' | 'wrong' */
 export function speakName(countryId, variant = '', enabled = true) {
   if (enabled === false || !countryId) return Promise.resolve(false)
   const file = variant ? `${countryId}_${variant}` : countryId
-  return playUrl(`${BASE}/name/${file}.wav`)
+  return playUrl(audioUrl(`name/${file}.wav`))
 }
 
 export function speakCapital(countryId, variant = '', enabled = true) {
   if (enabled === false || !countryId) return Promise.resolve(false)
   const file = variant ? `${countryId}_${variant}` : countryId
-  return playUrl(`${BASE}/capital/${file}.wav`)
+  return playUrl(audioUrl(`capital/${file}.wav`))
 }
 
 /**
@@ -263,7 +300,7 @@ export function preloadVoices() {
   }
   // preload întrebarea principală
   try {
-    const a = new Audio(`${BASE}/ui/whichCountry.wav`)
+    const a = new Audio(audioUrl('ui/whichCountry.wav'))
     a.preload = 'auto'
   } catch {
     /* ignore */
